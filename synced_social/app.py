@@ -3,10 +3,13 @@ from datetime import datetime
 import json
 from os import environ as env
 from urllib.parse import quote_plus, urlencode
-
+import re
 from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, session, url_for, jsonify, request
+
+from bs4 import BeautifulSoup
+import requests
 
 try: from settings_local import mail
 except: pass
@@ -24,13 +27,66 @@ app.secret_key = env.get("APP_SECRET_KEY")
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    print('h')
+    print('submitted')
     data = request.get_json()
-    return jsonify({'data':str(data),'success':True});
+    # we expect data.emails to be a csv of emails
+    emails = data['emails'].split(",")
+    all_links = []
+    for email in emails:
+        links = get_social_links(email)
+        all_links.append(links)
+    ';'.join(map(str, all_links))
+    return jsonify({'links':str(all_links),'data':str(data),'success':True});
 
 @app.route('/')
 def home():
     return render_template('index.html',)
+
+def get_social_links(email):
+        # Split the email address to get the domain
+    try:
+        user, domain = email.split('@')
+    except ValueError:
+        return 'Invalid email format'
+
+    # Check if email domain is one of the specified services
+    if any(service in domain.lower() for service in ['gmail', 'outlook', 'aol']):
+        return None
+
+    # Try to navigate to the parsed domain
+    try:
+        print('time')
+        response = requests.get(f'http://{domain}', timeout=5)
+    except Exception as e:
+        print('to die')
+        print('Failed to access {domain}:'+str(e))
+
+    # Use Beautiful Soup to parse the HTML content
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # List of words to search for in links
+    keywords = ['instagram', 'twitter', 'facebook', 'tiktok', 'linkedin', 'youtube']
+
+
+
+    # Find all links in the HTML that include the keywords
+    print('chcekn')
+    content = response.text
+    links = []
+    pattern = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+
+    # Find all occurrences of HTTP links in the content
+    for match in re.finditer(pattern, content):
+        url = match.group()
+        if any(keyword in url.lower() for keyword in keywords):
+            links.append(url)
+
+
+
+    print("found:"+str(links))
+    return links
+
+
 
 if __name__ == '__main__':
     app.run()
