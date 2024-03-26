@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synced Social</title>
+    <link rel="icon" href="/static/img/synced_social_logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/static/css/form.css" />
+    <link rel="stylesheet" href="/static/css/index.css" />
+    <script> const csrf = "{{ csrf }}" </script>
+    <script src="/static/js/jquery-min.js"></script>
+    <script src="/static/js/form.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="main">
+            <div id="logo"></div>
+<div id="title">🚀 Social Sync🚀</div>
+<p>Enter a domain and output all social handles</p>
+       </div>
+        <form class="centered-form" >
+            <h1>Synced Social</h1>
+             <input type="text" placeholder="Domain" id="domain" name="field1" required>
+            <button id="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+
