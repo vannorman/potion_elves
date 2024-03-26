@@ -33,10 +33,18 @@ def submit():
     emails = data['emails'].split(",")
     all_links = []
     for email in emails:
-        links = get_social_links(email)
+        links = str(get_social_links(email))
+        for ch in ['[',']','\'','"']:
+            if ch in links:
+                links = links.replace(ch,"")
         all_links.append(links)
-    ';'.join(map(str, all_links))
-    return jsonify({'links':str(all_links),'data':str(data),'success':True});
+    print("DONE")
+    links='@@'.join(map(str, all_links))
+    for ch in ['[',']','\'','"']:
+        if ch in links:
+            links = links.replace(ch,"")
+
+    return jsonify({'links':str(links),'data':str(data),'success':True});
 
 @app.route('/')
 def home():
@@ -55,12 +63,14 @@ def get_social_links(email):
 
     # Try to navigate to the parsed domain
     try:
-        print('time')
         response = requests.get(f'http://{domain}', timeout=5)
     except Exception as e:
-        print('to die')
         print('Failed to access {domain}:'+str(e))
+        return []
 
+    if response is None:
+        print('no resp')
+        return []
     # Use Beautiful Soup to parse the HTML content
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -70,7 +80,7 @@ def get_social_links(email):
 
 
     # Find all links in the HTML that include the keywords
-    print('chcekn')
+    print('chcekn '+email )
     content = response.text
     links = []
     pattern = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
@@ -79,11 +89,12 @@ def get_social_links(email):
     for match in re.finditer(pattern, content):
         url = match.group()
         if any(keyword in url.lower() for keyword in keywords):
-            links.append(url)
+            if (len(url) < 50):
+                links.append(url)
 
 
 
-    print("found:"+str(links))
+    print("found:"+str(len(links)))
     return links
 
 

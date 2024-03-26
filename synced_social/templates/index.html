@@ -15,12 +15,16 @@
     <div class="container">
         <div id="main">
             <div id="logo"></div>
-            <p>Enter a domain and output all social handles</p>
+            <p>Enter a single email or csv emails</p>
        </div>
         <form class="centered-form" >
              <input type="text" placeholder="emails" id="emails" name="field1" required>
             <button id="submit">Submit</button>
         </form>
+        <div id="progressContainer">
+          <div id="progressBar" style="width:0%; background-color: blue; height: 20px;"></div>
+        </div>
+        <p id="currentItem"></p>
     </div>
     <br>
     <div id="result">result</div>
