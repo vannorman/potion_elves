@@ -4,24 +4,18 @@ $(document).ready(function(){
          event.preventDefault();
          $.ajax({
             type: 'POST',
-            url: "/internship/apply",
+            url: "/submit",
             headers: {
                 "X-CSRFToken" : csrf,
                 "Content-Type": "application/json"
             },
             data : JSON.stringify({ 
-                which : $('#which').val(),
-                name : $('#name').val(),
-                email : $('#email').val(),
-                link1 : $('#link1').val(),
-                howhear : $('#howhear').val(),
-                message : $('#message').val(),
+                domain : $('#domain').val(),
                 }).replaceAll("',","',\n"),
             dataType : 'json',
             contentType : 'application/json',
             success: function (e) {
-                alert('Thanks for applying, '+$('#name').val()+'!');
-                $('input').each(function(){$(this).val('');})
+                $('#result').text(e.data)
             },
             error: function (e) {
                 alert('no');
