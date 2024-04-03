@@ -82,7 +82,7 @@ def get_social_links(email):
     # Find all links in the HTML that include the keywords
     print('chcekn '+email )
     content = response.text
-    links = []
+    links = [email]
     pattern = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
 
     # Find all occurrences of HTTP links in the content

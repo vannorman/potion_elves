@@ -32,11 +32,59 @@ function stringToTable(inputString) {
 
     // Start creating the HTML table
     let htmlTable = '<table border="1">'; // You can remove border="1" or style it as needed
-
+    htmlTable += '<tr><th>Email</th><th>Facebook</th><th>Twitter</th><th>YouTube</th><th>LinkedIn</th><th>Instagram</th></tr>';
+    
     // Loop through the items and add each one as a row in the table
     items.forEach(item => {
+        // each item is a csv of socials.
+        // for Facebook, Linkedin, Instagram, Twitter, Youtube, Other.
+        item = item.trim();
+        socials = item.split(',');
+
+        socials = removeLongerStringsWhenContained(socials); // prune duplicates.
+        orderedSocials = [];
+        orderedSocials[0] = socials[0]; // save email as first element.
+
+        console.log(socials)
+        for(let i=0;i<socials.length;i++){
+            socials[i] = socials[i].trim(); // trim whtie
+            socials[i] = socials[i].toLowerCase(); // lowercase
+            socials[i] = socials[i].split('?')[0]; // trim ? and anything after
+            socials[i] = socials[i].replace(/\/$/, ''); // trim final '/'
+            console.log("socials i:"+socials[i]);
+        }
+        const findIndexOfSubstring = (arr, substring) => arr.findIndex(element => element.includes(substring));
+        const facebookIndex = findIndexOfSubstring(socials,'facebook');
+        const twittterIndex = findIndexOfSubstring(socials,'twitter');
+        const youtubeIndex = findIndexOfSubstring(socials,'youtube');
+        const linkedinIndex = findIndexOfSubstring(socials,'linkedin');
+        const instagramIndex = findIndexOfSubstring(socials,'instagram');
+
+       
+        // now that indexes are found, replace instagram and twitter socials with handle only. Leave the rest as links.
+        for(let i=0;i<socials.length;i++){
+            if (socials[i].includes('twitter') || socials[i].includes('instagram'))
+                socials[i] = "@" + socials[i].substring(socials[i].lastIndexOf('/') + 1);
+        }
+
+        
+        orderedSocials[1] = facebookIndex == -1 ? "" : socials[facebookIndex];
+        orderedSocials[2] = twittterIndex == -1 ? "" : socials[twittterIndex];
+        orderedSocials[3] = youtubeIndex == -1 ? "" : socials[youtubeIndex];
+        orderedSocials[4] = linkedinIndex == -1 ? "" : socials[linkedinIndex];
+        orderedSocials[5] = instagramIndex == -1 ? "" : socials[instagramIndex];
+
+        // finally if there are any elements in "socials" that don't contain instagram, twitter etc, then put it as last element.
+
+
+        row = "<tr>";
+        for(let i=0;i<orderedSocials.length;i++){
+            row += "<td>"+orderedSocials[i]+"</td>";
+        }
+        row += "</tr>" 
+ 
         // Each item is placed in a table row
-        htmlTable += `<tr><td>${item.trim()}</td></tr>`; // trim() is used to remove any leading or trailing white space
+        htmlTable += row;
     });
 
     // Close the table HTML
@@ -76,4 +124,21 @@ function updateProgressBar(listString) {
     update();
 }
 
+function removeLongerStringsWhenContained(arr) {
+  // sometimes there are duplicates and sometimes /about/ is on the dupilcate. 
+  // here we Prune duplicates and prune the longest of the 2 matching duplicates.
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i].includes(arr[j])) {
+        arr.splice(i, 1);
+        i--; // Adjust index after removal
+        break; // Break to avoid accessing removed element
+      } else if (arr[j].includes(arr[i])) {
+        arr.splice(j, 1);
+        j--; // Adjust index after removal
+      }
+    }
+  }
+  return arr;
+}
 
