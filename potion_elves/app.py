@@ -23,7 +23,7 @@ app.secret_key = env.get("APP_SECRET_KEY")
 
 # import logging
 #app.logger.setLevel(logging.DEBUG)  # Set log level to DEBUG for debugging
-# logging.basicConfig(filename='/home/ubuntu/synced.social/synced_social/flask.log', level=logging.DEBUG)
+# logging.basicConfig(filename='/home/ubuntu/potionelves.com/potion_elves/flask.log', level=logging.DEBUG)
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -97,7 +97,22 @@ def get_social_links(email):
     print("found:"+str(len(links)))
     return links
 
+@app.route('/waitlist')
+def waitlist():
+    return render_template('waitlist.html',)
 
+@app.route('/waitlist/apply', methods=['POST'])
+def waitlist_apply():
+    data = request.get_json()
+    ip = request.remote_addr
+    to = ['charlie@vannorman.ai' ]
+    fr = 'charlie@mana.red'
+    subject = "Mana Games - Waitlist";
+    text = str(data);
+    text += " ip : "+str(ip)
+    server = 'mana.red'
+    mail.sendMail(to, fr, subject, text,server)
+    return jsonify({'success':True});
 
 if __name__ == '__main__':
     app.run()

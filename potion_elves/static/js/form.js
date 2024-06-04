@@ -53,6 +53,10 @@ function stringToTable(inputString) {
             socials[i] = socials[i].replace(/\/$/, ''); // trim final '/'
             console.log("socials i:"+socials[i]);
         }
+
+        // autho'rs note: I find myself constantly dealing with data where socials for each of 5 networks may be missing
+        // so I need to parse for example " nothing , nothing , linkeidn.com/in/va, nothing, nothing" in a predictable way
+        // I think the most straightforward is to combine all socials into a single V in a CSV as "linkedin:,twitter:https://twitter.com/prof1," etc. that way each profile is stored as a KVP in a JSON object
         const findIndexOfSubstring = (arr, substring) => arr.findIndex(element => element.includes(substring));
         const facebookIndex = findIndexOfSubstring(socials,'facebook');
         const twittterIndex = findIndexOfSubstring(socials,'twitter');

@@ -25,7 +25,7 @@ body {
     text-align:center;
 }
 #logo {
-    background-image:url(/static/img/synced_social_logo.png);
+    background-image:url(/static/img/logo2.jpg);
     background-size:contain;
     background-repeat:no-repeat;
     width:498px;
@@ -95,4 +95,46 @@ button:hover {
     padding:20px;
     position: relative;
 }
+
+#waitlist {
+    margin: 0 auto;
+    text-align: center;
+    position: fixed;
+    bottom: 31%;
+    left: calc(50% - 180px);
+    font-size: 2em;
+    color: black;
+    background-color: white;
+    border-radius: 50px;
+    font-family: Nunito;
+    line-height: 70px;
+    vertical-align: center;
+    width: 360px;
+    font-weight: bold;
+    height: 70px;
+    border: 2px solid black;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+#waitlist:hover{
+    background-color:orange;
+    cursor:pointer;
+}
+
+#main {
+    width:100%;
+    position:fixed;
+    height:100%;
+    background-image:url('/static/img/splash.jpg');
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+a, a:visited, a:link, a:hover, a:active {
+    color:#111;
+    text-decoration:none;
+}
+
+
 

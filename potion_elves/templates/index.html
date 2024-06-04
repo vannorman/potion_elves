@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synced Social</title>
-    <link rel="icon" href="/static/img/synced_social_logo.ico" type="image/x-icon" />
+    <title>Potion Elves</title>
+    <link rel="icon" href="/static/img/potion_elves_logo.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/static/css/form.css" />
     <link rel="stylesheet" href="/static/css/index.css" />
     <script> const csrf = "{{ csrf }}" </script>
@@ -15,16 +15,13 @@
     <div class="container">
         <div id="main">
             <div id="logo"></div>
-            <p>Enter a single email or csv emails</p>
+            <p>The Finest Brews of Wizardy and Magic</p>
+            <p>
+            <p> Want some? Join the waitlist:
+            <div id="waitlist"> <a class="button" href="/waitlist">Waitlist</a></div>
        </div>
-        <form class="centered-form" >
-             <input type="text" placeholder="emails" id="emails" name="field1" required>
-            <button id="submit">Submit</button>
-        </form>
-        <div id="progressContainer">
-          <div id="progressBar" style="width:0%; background-color: blue; height: 20px;"></div>
-        </div>
-        <p id="currentItem"></p>
+        <img src="/static/img/potions.jpg /">
+        <div id="potions" style="width:600px;height:400px;background-image:url(/static/img/potions.jpg);background-size:contain;background-repeat:no-repeat;"></div>
     </div>
     <br>
     <div id="result">result</div>
