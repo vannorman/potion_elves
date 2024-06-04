@@ -107,13 +107,13 @@ def waitlist_apply():
     ip = request.remote_addr
     to = ['charlie@vannorman.ai' ]
     fr = 'charlie@mana.red'
-    subject = "Mana Games - Waitlist";
+    subject = "Potion Elves - Waitlist";
     text = str(data);
     text += " ip : "+str(ip)
     server = 'mana.red'
     mail.sendMail(to, fr, subject, text,server)
     return jsonify({'success':True});
 
-if __name__ == '__main__':
-    app.run()
 
+if __name__ == '__main__':
+  app.run(host='0.0.0.0', port=30006, debug=True)
